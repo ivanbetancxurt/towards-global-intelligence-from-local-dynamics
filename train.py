@@ -1,7 +1,6 @@
 from nca import NCA
 import torch as th
 import argparse
-import csv
 
 def main():
     parser = argparse.ArgumentParser()
@@ -148,7 +147,7 @@ def main():
 
         epochs_for_ckpt = 3 if args.test else args.epochs * (args.pop + 1)
 
-        save_dir = 
+        save_dir = f'../checkpoints/{args.dataset}_full_lexi/{args.name}_({epochs_for_ckpt}g_{args.escheme}_{args.casemode}).pth'
         
         th.save({
             'model': model.state_dict(),
@@ -166,7 +165,7 @@ def main():
             },
             'epochs': epochs_for_ckpt,
             'device': str(device)
-        }, f'../checkpoints/{args.dataset}_full_lexi/{args.name}_({epochs_for_ckpt}g_{args.escheme}_{args.casemode}).pth')
+        }, save_dir) 
 
 
     elif args.command == 'gls_finetune':
