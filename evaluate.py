@@ -57,6 +57,7 @@ def main():
         'mask_prob_low',
         'mask_prob_high'
     ]
+
     lexi_fieldnames = [
         'task', 
         'solved', 
@@ -92,29 +93,15 @@ def main():
                     writer.writerows(data)
 
         else:
-            #? this code is retarded
             if args.ft:
                 out = f'../data/results/{args.dataset}_{args.command}/{args.dataset}_{args.command}FT_{args.run}_{args.escheme}_{args.casemode}_results.csv'
             else:
                 if args.casemode == 'ex':
-                    if args.escheme == 'mad':
-                        out = f'../data/results/{args.dataset}_{args.command}/{args.dataset}_{args.command}_{args.run}_({args.gens}g_MAD)_results.csv'
-                    elif args.escheme == 'bh':
-                        out = f'../data/results/{args.dataset}_{args.command}/{args.dataset}_{args.command}_{args.run}_({args.gens}g_BH)_results.csv'
-                    else:
-                        out = f'../data/results/{args.dataset}_{args.command}/{args.dataset}_{args.command}_{args.run}_({args.gens}g_{args.epsilon}e)_results.csv'
+                    out = f'../data/results/{args.dataset}_{args.command}/{args.dataset}_{args.command}_{args.run}_({args.gens}g_{args.escheme})_results.csv'
                 elif args.casemode == 'pixel1':
-                    if args.escheme == 'mad':
-                        out = f'../data/results/{args.dataset}_{args.command}/{args.dataset}_{args.command}_{args.run}_({args.gens}g_MAD_PIXEL1)_results.csv'
-                    elif args.escheme == 'bh':
-                        out = f'../data/results/{args.dataset}_{args.command}/{args.dataset}_{args.command}_{args.run}_({args.gens}g_BH_PIXEL1)_results.csv'
-                    elif args.escheme == 'fixed':
-                        out = f'../data/results/{args.dataset}_{args.command}/{args.dataset}_{args.command}_{args.run}_({args.gens}g_{args.epsilon}e_PIXEL1)_results.csv'
-                    elif args.escheme == 'none':
-                        out = f'../data/results/{args.dataset}_{args.command}/{args.dataset}_{args.command}_{args.run}_({args.gens}g_NONE_PIXEL1)_results.csv'
+                    out = f'../data/results/{args.dataset}_{args.command}/{args.dataset}_{args.command}_{args.run}_({args.gens}g_{args.escheme}_PIXEL1)_results.csv'
                 elif args.casemode == 'pixel2':
                     out = f'../data/results/{args.dataset}_{args.command}/{args.dataset}_{args.command}_{args.run}_({args.gens}g_NONE_PIXEL2)_results.csv'
-
 
             with open(out, 'w', newline='', encoding='utf-8') as f:
                 writer = csv.DictWriter(f, fieldnames=lexi_fieldnames)
@@ -131,17 +118,6 @@ def main():
             
         x = th.tensor(task['input'])
         y = th.tensor(task['output'])
-
-        configs['scored_with_avg'] = False #! QUICK FIXXXXXXXXXXX
-        configs['pop_size'] = 4
-        configs['n_hidden_channels'] = 20
-        configs['temperature'] = 5
-        configs['steps'] = 10
-        configs['trials'] = 128
-        configs['learning_rate_max'] = 0.01
-        configs['learning_rate_min'] = 0
-        configs['mask_prob_low'] = 0.0
-        configs['mask_prob_high'] = 0.75
 
         res = model.evaluate(inputs=x.unsqueeze(0), targets=y.unsqueeze(0), generate_img=generate_img, cell_size=cell_size)
 
@@ -230,21 +206,9 @@ def main():
             ckpt = th.load(f'../checkpoints/{args.dataset}_full_lexi/{args.dataset}_full_lexiFT_{args.run}_{args.escheme}_{args.casemode}_lrmax=0.01.pth', map_location=th.device(device))
         else:
             if args.casemode == 'ex':
-                if args.escheme == 'mad':
-                    ckpt = th.load(f'../checkpoints/{args.dataset}_full_lexi/{args.dataset}_full_lexi_{args.run}_({args.gens}g_MAD).pth', map_location=th.device(device))
-                elif args.escheme == 'bh':
-                    ckpt = th.load(f'../checkpoints/{args.dataset}_full_lexi/{args.dataset}_full_lexi_{args.run}_({args.gens}g_BH).pth', map_location=th.device(device))
-                else:
-                    ckpt = th.load(f'../checkpoints/{args.dataset}_full_lexi/{args.dataset}_full_lexi_{args.run}_({args.gens}g_{args.epsilon}e).pth', map_location=th.device(device))
+                ckpt = th.load(f'../checkpoints/{args.dataset}_full_lexi/{args.dataset}_full_lexi_{args.run}_({args.gens}g_{args.escheme}).pth', map_location=th.device(device))
             elif args.casemode == 'pixel1':
-                if args.escheme == 'mad':
-                    ckpt = th.load(f'../checkpoints/{args.dataset}_full_lexi/{args.dataset}_full_lexi_{args.run}_({args.gens}g_MAD_PIXEL1).pth', map_location=th.device(device))
-                elif args.escheme == 'bh':
-                    ckpt = th.load(f'../checkpoints/{args.dataset}_full_lexi/{args.dataset}_full_lexi_{args.run}_({args.gens}g_BH_PIXEL1).pth', map_location=th.device(device))
-                elif args.escheme == 'fixed':
-                    ckpt = th.load(f'../checkpoints/{args.dataset}_full_lexi/{args.dataset}_full_lexi_{args.run}_({args.gens}g_{args.epsilon}e_PIXEL1).pth', map_location=th.device(device))
-                elif args.escheme == 'none':
-                    ckpt = th.load(f'../checkpoints/{args.dataset}_full_lexi/{args.dataset}_full_lexi_{args.run}_({args.gens}g_NONE_PIXEL1).pth', map_location=th.device(device))
+                ckpt = th.load(f'../checkpoints/{args.dataset}_full_lexi/{args.dataset}_full_lexi_{args.run}_({args.gens}g_{args.escheme}_PIXEL1).pth', map_location=th.device(device))
             elif args.casemode == 'pixel2':
                 ckpt = th.load(f'../checkpoints/{args.dataset}_full_lexi/{args.dataset}_full_lexi_{args.run}_({args.gens}g_none_pixel2).pth', map_location=th.device(device))
                 
