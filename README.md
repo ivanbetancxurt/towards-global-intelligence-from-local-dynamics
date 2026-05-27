@@ -1,4 +1,8 @@
-# Gradient Lexicase Selection for NCA on ARC-AGI
+# Towards Global Intelligence From Local Dynamics
 
-This repo is the home of my in progress code for my senior computer science thesis at Amherst College. I am exploring how evolving neural cellular automata with a specific technique 
-called gradient lexicase selection affects their performance on the ARC-AGI benchmark.
+This repository is home to the code for my Amherst College computer science thesis advised by Prof. Lee Spector, titled *Towards Global Intelligence From Local Dynamics*. The official thesis PDF can be found at the top level of the repository.
+
+## Summary and Motivation
+
+Prof. Spector's research is centered around evolutionary computation and genetic algorithms. As I familiarized myself with the field during the beginning phases of my research, the elegant concept of emergence captivated me. Emergence is the process by which a considerably complex system emerges from smaller, simpler systems. The most striking examples of emergence live in nature, such as starling murmurations or cell morphogenesis. We also observe this behavior in cellular automata, where otherwise trivial and unassuming update rules result in shocking complexity. After exploring the existing work done with cellular automata, and particularly with neural cellular automata (NCA), I wondered whether introducing evolutionary pressure, specifically with Ding and Spector's Gradient Lexicase Selection algorithm, to these models could leverage their emergent properties to steer them towards intelligent and globally-aware behavior. I measured this by applying the evolved NCA to the ARC-AGI benchmark. In many of my experiemnts, Gradient Lexicase Selection alone was only able to increase the performance of NCA on the ARC-AGI benchmark by small margins when compared to non-evolved models. However, they revealed important lessons for the use of Gradient Lexicase Selection in data-sparse problem domains such as ARC-AGI. Moreover, my research pointed towards a notion of inherently "easy" and "hard" tasks for NCA, informing what future research should focus on when applying NCA to tasks which require intelligence, whatever that means. 
+
